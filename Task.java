@@ -1,4 +1,3 @@
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -15,13 +14,21 @@ public class Task implements Serializable, Comparable<Task> {
         this.completed = false;
     }
 
-    public String getTitle() { return title; }
-    public String getDescription() { return description; }
-    public LocalDate getDueDate() { return dueDate; }
-    public String getPriority() { return priority; }
-    public boolean isCompleted() { return completed; }
+    public String getTitle() {
+         return title; 
+        }
+    public String getDescription() { 
+        return description; }
+    public LocalDate getDueDate() { 
+        return dueDate; }
+    public String getPriority() { 
+        return priority; }
+    public boolean isCompleted() {
+         return completed; }
 
-    public void toggleStatus() { this.completed = !this.completed; }
+    public void toggleStatus() { 
+        this.completed = !this.completed; 
+    }
 
     @Override
     public int compareTo(Task other) {

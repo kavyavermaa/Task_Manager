@@ -1,9 +1,9 @@
-import javax.swing.*; // Swing components for GUI
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel; // Table model for JTable
 import java.awt.*; // Layout and color-related classes
-import java.awt.event.*; // Event handling
-import java.io.*; // File input-output for saving/loading tasks
-import java.time.LocalDate; // For working with dates
+import java.awt.event.*; 
+import java.io.*; 
+import java.time.LocalDate; 
 import java.time.format.DateTimeFormatter; // For formatting date strings
 import java.util.ArrayList; // For storing tasks
 import java.util.Collections; // For sorting tasks by due date
@@ -22,7 +22,6 @@ public class TaskManager extends JFrame {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public TaskManager() {
-        // --- FRAME SETTINGS ---
         setTitle("Task Diary");
         setSize(1000, 600);
         setLocationRelativeTo(null); // Center the window
@@ -32,7 +31,7 @@ public class TaskManager extends JFrame {
 
         loadTasks(); // Load saved tasks when app starts
 
-        // --- TOP PANEL: Title + Filter ---
+        // TOP PANEL: Title + Filter
         JLabel titleLabel = new JLabel("Welcome to Your Personal Task Diary!", SwingConstants.LEFT);
         titleLabel.setFont(new Font("Segoe Script", Font.BOLD, 22));
         titleLabel.setForeground(new Color(186, 85, 211));
@@ -53,7 +52,7 @@ public class TaskManager extends JFrame {
         topPanel.add(filterPanel, BorderLayout.EAST);
         add(topPanel, BorderLayout.NORTH);
 
-        // --- LEFT PANEL: Input Fields to Add Task ---
+        // LEFT PANEL: Input Fields to Add Task
         JPanel inputPanel = new JPanel(new GridLayout(5, 2, 10, 10));
         inputPanel.setBackground(new Color(255, 230, 240));
         inputPanel.setBorder(BorderFactory.createTitledBorder("Write New Entry"));
@@ -86,9 +85,10 @@ public class TaskManager extends JFrame {
         buttonPanel.add(addButton);
         buttonPanel.add(saveButton);
 
-        inputPanel.add(new JLabel("")); inputPanel.add(buttonPanel);
+        inputPanel.add(new JLabel("")); // Left cell — EMPTY
+         inputPanel.add(buttonPanel);   // Right cell — contains Add + Save buttons
 
-        // --- RIGHT PANEL: Task Table View ---
+        // RIGHT PANEL: Task Table View
         model = new DefaultTableModel(new String[]{"Title", "Due Date", "Priority", "Status"}, 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -109,7 +109,7 @@ public class TaskManager extends JFrame {
         centerPanel.add(scrollPane);
         add(centerPanel, BorderLayout.CENTER);
 
-        // --- BOTTOM PANEL: Buttons to Load, Toggle, Delete ---
+        // BOTTOM PANEL: Buttons to Load, Toggle, Delete
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         bottomPanel.setBackground(new Color(255, 230, 250));
 
@@ -161,7 +161,7 @@ public class TaskManager extends JFrame {
         setVisible(true); // Show the window
     }
 
-    // --- Adds a new task to the list ---
+    //Adds a new task to the list
     private void addTask() {
         String title = titleField.getText().trim();
         String desc = descArea.getText().trim();
@@ -184,7 +184,7 @@ public class TaskManager extends JFrame {
         }
     }
 
-    // --- Refresh table data from task list ---
+    //Refresh table data from task list
     private void refreshTable() {
         Collections.sort(tasks); // Sort by due date
         model.setRowCount(0); // Clear old rows
@@ -212,37 +212,34 @@ public class TaskManager extends JFrame {
         }
     }
 
-    // --- Save tasks to file using serialization ---
+    //Save tasks to file
     private void saveTasks() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("tasks.dat"))) {
             oos.writeObject(tasks);
             System.out.println("Tasks saved automatically.");
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error saving tasks.");
+            JOptionPane.showMessageDialog(this, "Exception");
         }
     }
 
-    // --- Load tasks from file ---
     private void loadTasks() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("tasks.dat"))) {
-            tasks = (ArrayList<Task>) ois.readObject(); // Load tasks
-            refreshTable(); // Update GUI
+        try (ObjectInputStream o = new ObjectInputStream(new FileInputStream("tasks.dat"))) {
+            tasks = (ArrayList<Task>) o.readObject(); // Load tasks
+            refreshTable();
             System.out.println("Tasks loaded automatically.");
         } catch (Exception e) {
             System.out.println("No saved tasks found.");
         }
     }
 
-    // --- Clears input fields after adding task ---
+    //Clears input fields after adding task
     private void clearInputs() {
         titleField.setText("");
         descArea.setText("");
         dateField.setText("");
         priorityBox.setSelectedIndex(0);
     }
-
-    // --- Main method ---
     public static void main(String[] args) {
-        new TaskManager(); // Start the app
+        new TaskManager(); 
     }
 }
